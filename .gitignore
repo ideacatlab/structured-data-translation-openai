@@ -1,0 +1,13 @@
+translate/*
+logs
+parts/*
+output/*
+.env
+translation.log
+cache
+__pycache__
+output/*
+storage/logs/*
+storage/cache/*
+storage/app/*
+file.json
