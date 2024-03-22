@@ -15,7 +15,7 @@ def call_openai_api(input_data):
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant that translates JSON objects."
+                "content": "You are a helpful translation assistant designed to output JSON. This JSON will contain the translation of the entire content received, along with instructions about the target language and the context in which those sentences will be used."
             },
             {
                 "role": "user",

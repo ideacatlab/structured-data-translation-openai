@@ -5,9 +5,11 @@ from .openai_api import call_openai_api
 import os
 import logging
 import logging.config
+from dotenv import load_dotenv
 
 logging.config.fileConfig(fname='log.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
+load_dotenv(override=True)
 
 def translate_and_save(input_file, output_folder, parsed_args=None):
     max_retries = 3
@@ -19,7 +21,7 @@ def translate_and_save(input_file, output_folder, parsed_args=None):
             data = json.load(json_file)
             
         lang_argument = parsed_args.lang
-        target_language = lang_argument if lang_argument else 'Romanian'
+        target_language = lang_argument if lang_argument else os.getenv("DEFAULT_OUTPUT_LANGUAGE")
         
         prompt = f'Translate these lines from JSON object from a translation file used in Laravel, from English to {target_language} just on the right side of the key-value pairs. Return me as a response just the JSON object back, translated as I explained, and no more other data.\n{json.dumps(data)}'
 
@@ -29,17 +31,16 @@ def translate_and_save(input_file, output_folder, parsed_args=None):
             response = call_openai_api(prompt)
             success = True
             logging.info('API request successful')
-        except openai.error.RateLimitError as rate_limit_error:
-            sleep_time = int(rate_limit_error.meta['wait_seconds'])
-            logging.warning('Rate limit exceeded. Waiting...')
-            time.sleep(sleep_time)
-            logging.warning('Rate limit wait completed')
+        # except openai.error.RateLimitError as rate_limit_error:
+        #     sleep_time = int(rate_limit_error.meta['wait_seconds'])
+        #     logging.warning('Rate limit exceeded. Waiting...')
+        #     time.sleep(sleep_time)
+        #     logging.warning('Rate limit wait completed')
         except openai.error.Timeout as timeout_error:
             logging.warning('API request timeout. Retrying...')
             time.sleep(retry_delay)
             logging.warning('Retrying API request after timeout')
         except openai.error.ServiceUnavailableError:
-            # Custom handling for ServiceUnavailableError
             logging.warning('Server overloaded or not ready yet. Waiting...')
             for i in range(custom_retry_delay, 0, -1):
                 logging.warning(f'Waiting for {i} seconds...')

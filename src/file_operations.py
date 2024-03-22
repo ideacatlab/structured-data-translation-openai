@@ -33,34 +33,6 @@ def archive_log_file():
     logging.info(f'Log file will be archived to "{archive_folder}/translation.log".')
     shutil.move(log_file, os.path.join(archive_folder, 'translation.log'))
     
-# template_file = 'translate/archive'
-# part_file = 'parts/archive'
-# parts_folder = 'parts'
-# translate_folder = 'translate'   
-       
-# def archive_misc_files():
-#     archive_parts = os.path.join(part_file, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-#     os.makedirs(archive_parts)
-#     parts_to_archive = [file for file in os.listdir(parts_folder) if file.endswith('.json')]
-#     if parts_to_archive:
-#         logging.info(f'Archiving {len(parts_to_archive)} JSON files from {parts_folder} to "{part_file}"')
-#         for filename in parts_to_archive:
-#             source_path = os.path.join(parts_folder, filename)
-#             target_path = os.path.join(part_file, filename)
-#             shutil.move(source_path, target_path)
-    
-#     archive_translate = os.path.join(template_file, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-#     os.makedirs(archive_translate)  
-#     translate_to_archive = [file for file in os.listdir(translate_folder) if file.endswith('.json')]
-#     if translate_to_archive:
-#         logging.info(f'Archiving {len(translate_to_archive)} JSON files from {translate_folder} to "{template_file}"')
-#         for filename in translate_to_archive:
-#             source_path = os.path.join(translate_folder, filename)
-#             target_path = os.path.join(template_file, filename)
-#             shutil.move(source_path, target_path)
-
-#     logging.info(f'Translated files have been archived to "{archive_translate}".')
-
 def count_translated_files(translate_folder):
     return len([filename for filename in os.listdir(translate_folder) if filename.endswith('.json')])
 

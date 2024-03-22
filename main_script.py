@@ -9,6 +9,14 @@ from src.assembler import combine_json_files
 from src.translation_logic import translate_and_save
 from src.file_operations import setup_logging_folders, archive_log_file, count_translated_files, translate_folder_checks
 
+log_dir = 'storage/logs'
+log_file = os.path.join(log_dir, 'translation.log')
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir, exist_ok=True)
+if not os.path.isfile(log_file):
+    open(log_file, 'a').close()
+
+
 logging.config.fileConfig(fname='log.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
